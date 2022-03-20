@@ -1,14 +1,37 @@
-const weather = new Weather('chivilcoy');
+//Instantiate storage
+const storage = new Storage();
 
+//Get stored location in local storage.
+const storedWeatherLoc = storage.getLocationData();
 
-// weather.getLocation()
-//     .then(results => {
-//         console.log(results[0].lat);
-//     })
-//     .catch(err => console.log(err));
+//Instantiate weather
+const weather = new Weather(storedWeatherLoc);
 
-weather.getWeather()
-    .then(results => {
-        console.table(results.weather[0]);
-    })
-    .catch(err => console.log(err));
+//Instantiate UI
+const ui = new UI();
+
+//Get weather on Dom load
+document.addEventListener('DOMContentLoaded', getWeather)
+
+//Change location event handler
+document.getElementById('w-change-btn').addEventListener('click',(e) =>{
+    const city = document.getElementById('city').value;
+    //Change location
+    weather.changeLocation(city);
+    //Set location in local storage
+    storage.setLocationData(city);
+    //Get and display weather
+    getWeather();
+
+    //Close modal when click
+    $('#locModal').modal('hide');
+}
+)
+//Gets weather and display it
+function getWeather(){
+    weather.getWeather()
+        .then(results => {
+            ui.paint(results);
+        })
+        .catch(err => console.log(err));
+}

@@ -23,7 +23,7 @@ class Weather {
             })
             .catch(err => console.log(err));
         
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${this.apiKey}`);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${this.apiKey}&units=metric`);
 
         const responseData = await response.json();
 
